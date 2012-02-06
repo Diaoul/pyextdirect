@@ -95,3 +95,20 @@ def expose(f=None, base=None, action=None, method=None):
     if base is not None:  # module-level function case
         return register_f
     return expose_f
+
+def merge_configurations(configurations):
+    """Merge configurations together and raise error if a conflict is detected
+
+    :param configurations: configurations to merge together
+    :type configurations: list of :attr:`~pyextdirect.configuration.Base.configuration` dicts
+    :return: merged configurations as a single one
+    :rtype: dict
+
+    """
+    configuration = {}
+    for c in configurations:
+        for k, v in c.iteritems():
+            if k in configuration:
+                raise ValueError('%s already in a previous base configuration' % k)
+            configuration[k] = v
+    return configuration

@@ -15,6 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with pyextdirect.  If not, see <http://www.gnu.org/licenses/>.
+from configuration import merge_configurations
 import json
 
 
@@ -90,21 +91,3 @@ def create_instances(configuration):
             if cls not in instances:
                 instances[cls] = cls()
     return instances
-
-
-def merge_configurations(configurations):
-    """Merge configurations together and raise error if a conflict is detected
-
-    :param configurations: configurations to merge together
-    :type configurations: list of :attr:`~pyextdirect.configuration.Base.configuration` dicts
-    :return: merged configurations as a single one
-    :rtype: dict
-
-    """
-    configuration = {}
-    for c in configurations:
-        for k, v in c.iteritems():
-            if k in configuration:
-                raise ValueError('%s already in a previous base configuration' % k)
-            configuration[k] = v
-    return configuration

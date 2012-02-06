@@ -15,6 +15,8 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with pyextdirect.  If not, see <http://www.gnu.org/licenses/>.
+from configuration import merge_configurations
+from collections import defaultdict
 import inspect
 import json
 
@@ -33,18 +35,20 @@ def create_api_dict(bases, url, namespace):
     :param string namespace: client namespace for this API
 
     """
-    api = {'type': 'remoting', 'url': url, 'namespace': namespace, 'actions': {}}
+    api = {'type': 'remoting', 'url': url, 'namespace': namespace, 'actions': defaultdict(list)}
     if not isinstance(bases, list):
         bases = [bases]
-    configurations = [b.configuration for b in bases]
-    for configuration in configurations:
-        for action, methods in configuration.iteritems():
-            if action not in api['actions']:
-                api['actions'][action] = []
-            for method, element in methods.iteritems():
-                if isinstance(element, tuple):
-                    attrs = len(inspect.getargspec(getattr(element[0], element[1]))[0]) - 1
-                else:
-                    attrs = len(inspect.getargspec(element)[0])
-                api['actions'][action].append({'name': method, 'len': attrs})
+    configuration = merge_configurations([b.configuration for b in bases])
+    for action, methods in configuration.iteritems():
+        for method, element in methods.iteritems():
+            if isinstance(element, tuple):
+                func = getattr(element[0], element[1])
+                attrs = len(inspect.getargspec(func)[0]) - 1
+            else:
+                func = element
+                attrs = len(inspect.getargspec(func)[0])
+            spec = {'name': method, 'len': attrs}
+            if func.exposed_form:
+                spec['formHandler'] = True
+            api['actions'][action].append(spec)
     return api
