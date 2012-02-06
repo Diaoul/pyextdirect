@@ -15,6 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with pyextdirect.  If not, see <http://www.gnu.org/licenses/>.
+from exceptions import FormError
 from configuration import merge_configurations
 import json
 
@@ -64,10 +65,19 @@ class Router(object):
             element = self.configuration[request['action']][request['method']]
             data = request['data'] or []
             if isinstance(element, tuple):
-                cls, meth = element
-                result = getattr(self.instances[cls], meth)(*data)
+                func = getattr(self.instances[element[0]], element[1])
             else:
-                result = element(*data)
+                func = element
+            if func.exposed_form:
+                try:
+                    func(*data)
+                    result = {'success': True}
+                except FormError as e:
+                    result = {'success': False}
+                    if e.errors:
+                        result['errors'] = e.errors
+            else:
+                result = func(*data)
         except Exception as e:
             if self.debug:
                 return {'type': 'exception', 'message': str(e), 'where': '%s.%s' % (request['action'], request['method'])}

@@ -67,7 +67,7 @@ def create_configuration(name='Base'):
     return ConfigurationMeta(name, (object,), {'configuration': {}, 'register': register})
 
 
-def expose(f=None, base=None, action=None, method=None):
+def expose(f=None, base=None, action=None, method=None, form=False):
     """Expose a function
 
     .. note::
@@ -78,15 +78,18 @@ def expose(f=None, base=None, action=None, method=None):
     :param base: base class that can register the function
     :param string action: name of the exposed action that will hold the method
     :param string method: name of the exposed method
+    :param boolean form: is a form handler
 
     """
     def expose_f(f):
         f.exposed = True
         f.exposed_action = action
         f.exposed_method = method
+        f.exposed_form = form
         return f
 
     def register_f(f):
+        f = expose_f(f)
         base.register(f, action or f.__module__, method or f.__name__)
         return f
 
@@ -95,6 +98,7 @@ def expose(f=None, base=None, action=None, method=None):
     if base is not None:  # module-level function case
         return register_f
     return expose_f
+
 
 def merge_configurations(configurations):
     """Merge configurations together and raise error if a conflict is detected
