@@ -66,3 +66,8 @@ API
 ---
 .. automodule:: pyextdirect.api
     :members:
+
+Exceptions
+----------
+.. automodule:: pyextdirect.exceptions
+    :members:
