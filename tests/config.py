@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with pyextdirect.  If not, see <http://www.gnu.org/licenses/>.
-from pyextdirect.configuration import create_configuration, expose
+from pyextdirect.configuration import create_configuration, expose, SUBMIT, LOAD
 from pyextdirect.exceptions import FormError
 
 
@@ -54,12 +54,16 @@ class Person(Base):
         """Renamed exposed action and method"""
         return 'Haha'
 
-    @expose(form=True)
-    def save(self, name):
-        """Form method"""
+    @expose(kind=SUBMIT)
+    def save(self, name=None):
+        """DirectSubmit method"""
         if name == 'Diaoul':
-            raise FormError('Name already taken', {'message': 'This name is already taken'})
-        return {'comment': 'Nice choice!'}
+            raise FormError({'name': 'This name is already taken'}, {'foo': 'bar'})
+
+    @expose(kind=LOAD)
+    def load(self):
+        """DirectLoad method"""
+        return {'name': self.default_name}
 
 
 @expose(base=Base, action='Basic')

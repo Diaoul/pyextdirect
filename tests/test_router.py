@@ -52,7 +52,14 @@ class RouterTestCase(unittest.TestCase):
         self.assertTrue(result['result'] == 'Hug')
 
     def test_call_form(self):
-        result = self.router.call({'tid': 1, 'action': 'Basic', 'method': 'say', 'data': ['hi']})
+        result = self.router.call({'extTID': 1, 'extAction': 'Person', 'extMethod': 'save', 'name': 'John'})
+        self.assertTrue(result['result']['success'] == True)
+
+    def test_call_form_failure(self):
+        result = self.router.call({'extTID': 1, 'extAction': 'Person', 'extMethod': 'save', 'name': 'Diaoul'})
+        self.assertTrue(result['result']['success'] == False)
+        self.assertTrue(result['result']['errors']['name'] == 'This name is already taken')
+        self.assertTrue(result['result']['foo'] == 'bar')
 
     def test_route(self):
         result = json.loads(self.router.route(json.dumps({'tid': 1, 'action': 'Basic', 'method': 'say', 'data': ['hi']})))
