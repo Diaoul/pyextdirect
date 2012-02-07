@@ -15,8 +15,8 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with pyextdirect.  If not, see <http://www.gnu.org/licenses/>.
+from configuration import merge_configurations, BASIC, LOAD, SUBMIT
 from exceptions import FormError
-from configuration import merge_configurations
 import json
 
 
@@ -37,12 +37,16 @@ class Router(object):
     def route(self, data):
         """Route an Ext Direct request to the appropriate function(s) and provide the response(s)
 
-        :param json data: Ext Direct request
+        :param data: Ext Direct request
+        :type data: json or dict
         :return: appropriate response(s)
         :rtype: json
 
         """
-        requests = json.loads(data)
+        if isinstance(data, dict):
+            requests = data
+        else:
+            requests = json.loads(data)
         if not isinstance(requests, list):
             requests = [requests]
         responses = []
@@ -62,26 +66,42 @@ class Router(object):
         """
         result = None
         try:
-            element = self.configuration[request['action']][request['method']]
-            data = request['data'] or []
-            if isinstance(element, tuple):
-                func = getattr(self.instances[element[0]], element[1])
+            if 'extAction' in request:  # DirectSubmit method
+                tid = request['extTID']
+                action = request['extAction']
+                method = request['extMethod']
             else:
+                tid = request['tid']
+                action = request['action']
+                method = request['method']
+            element = self.configuration[action][method]
+            if isinstance(element, tuple):  # class level function
+                func = getattr(self.instances[element[0]], element[1])
+            else:  # module level function
                 func = element
-            if func.exposed_form:
+            if func.exposed_kind == BASIC:  # basic method
+                args = request['data'] or []
+                result = func(*args)
+            elif func.exposed_kind == LOAD:  # DirectLoad method
+                args = request['data'] or []
+                result = {'success': True, 'data': func(*args)}
+            elif func.exposed_kind == SUBMIT:  # DirectSubmit method
+                kwargs = request
+                for k in ['extAction', 'extMethod', 'extType', 'extTID', 'extUpload']:
+                    if k in kwargs:
+                        del kwargs[k]
                 try:
-                    func(*data)
+                    func(**kwargs)
                     result = {'success': True}
                 except FormError as e:
-                    result = {'success': False}
+                    result = e.extra
+                    result['success'] = False
                     if e.errors:
                         result['errors'] = e.errors
-            else:
-                result = func(*data)
         except Exception as e:
             if self.debug:
-                return {'type': 'exception', 'message': str(e), 'where': '%s.%s' % (request['action'], request['method'])}
-        return {'type': 'rpc', 'tid': request['tid'], 'action': request['action'], 'method': request['method'], 'result': result}
+                return {'type': 'exception', 'message': str(e), 'where': '%s.%s' % (action, method)}
+        return {'type': 'rpc', 'tid': tid, 'action': action, 'method': method, 'result': result}
 
 
 def create_instances(configuration):

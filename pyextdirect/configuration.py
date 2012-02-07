@@ -17,7 +17,16 @@
 # along with pyextdirect.  If not, see <http://www.gnu.org/licenses/>.
 
 
-__all__ = ['create_configuration', 'expose']
+__all__ = ['create_configuration', 'expose', 'BASIC', 'LOAD', 'SUBMIT']
+
+#: Basic method
+BASIC = 0
+
+#: DirectLoad method
+LOAD = 1
+
+#: DirectSubmit method
+SUBMIT = 2
 
 
 class ConfigurationMeta(type):
@@ -67,7 +76,7 @@ def create_configuration(name='Base'):
     return ConfigurationMeta(name, (object,), {'configuration': {}, 'register': register})
 
 
-def expose(f=None, base=None, action=None, method=None, form=False):
+def expose(f=None, base=None, action=None, method=None, kind=BASIC):
     """Expose a function
 
     .. note::
@@ -78,14 +87,15 @@ def expose(f=None, base=None, action=None, method=None, form=False):
     :param base: base class that can register the function
     :param string action: name of the exposed action that will hold the method
     :param string method: name of the exposed method
-    :param boolean form: is a form handler
+    :param kind: kind of the method
+    :type kind: :data:`BASIC` or :data:`LOAD` or :data:`SUBMIT`
 
     """
     def expose_f(f):
         f.exposed = True
         f.exposed_action = action
         f.exposed_method = method
-        f.exposed_form = form
+        f.exposed_kind = kind
         return f
 
     def register_f(f):

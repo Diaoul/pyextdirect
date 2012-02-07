@@ -28,10 +28,11 @@ class FormError(Error):
     A result dict can be provided and will be returned to the client
 
     :param dict errors: result returned to the client
+    :param dict extra: extra stuff in the returned result
 
     For example::
 
-        @expose(form=True)
+        @expose(kind=SUBMIT)
         def save(self, firstname, lastname):
             errors = {}
             if len(firstname) < 3:
@@ -39,14 +40,18 @@ class FormError(Error):
             if not lastname:
                 errors['lastname'] = 'Missing'
             if errors:
-                raise FormError(errors)
+                raise FormError(errors, {'foo': 'bar'})
             # ...
 
-    Will return the dict ``{'success': False, 'message': 'Last name is missing'}`` as result in a response
+    Will return the dict ``{'success': False, 'errors': {'firstname': 'Invalid length', 'lastname': 'Missing'}, 'foo': 'bar'}``
+    as result in a response
 
     """
-    def __init__(self, errors):
+    def __init__(self, errors=None, extra=None):
         self.errors = errors or {}
+        self.extra = extra or {}
 
     def __str__(self):
-        return repr(self.errors)
+        result = self.extra
+        result['errors'] = self.errors
+        return repr(result)

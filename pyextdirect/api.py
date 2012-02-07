@@ -15,8 +15,8 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with pyextdirect.  If not, see <http://www.gnu.org/licenses/>.
-from configuration import merge_configurations
 from collections import defaultdict
+from configuration import merge_configurations, SUBMIT
 import inspect
 import json
 
@@ -48,7 +48,7 @@ def create_api_dict(bases, url, namespace):
                 func = element
                 attrs = len(inspect.getargspec(func)[0])
             spec = {'name': method, 'len': attrs}
-            if func.exposed_form:
+            if func.exposed_kind == SUBMIT:
                 spec['formHandler'] = True
             api['actions'][action].append(spec)
     return api
