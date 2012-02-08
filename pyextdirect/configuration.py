@@ -17,7 +17,7 @@
 # along with pyextdirect.  If not, see <http://www.gnu.org/licenses/>.
 
 
-__all__ = ['create_configuration', 'expose', 'BASIC', 'LOAD', 'SUBMIT']
+__all__ = ['BASIC', 'LOAD', 'SUBMIT', 'ConfigurationMeta', 'create_configuration', 'expose']
 
 #: Basic method
 BASIC = 0
