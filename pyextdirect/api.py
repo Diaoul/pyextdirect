@@ -22,7 +22,14 @@ import json
 
 
 def create_api(bases, url, namespace):
-    """Create the JS code for the API using a list of configuration :class:`Bases <pyextdirect.configuration.Base>`"""
+    """Create the JS code for the API using one or more :class:`Bases <pyextdirect.configuration.Base>`
+
+    :param bases: configuration bases
+    :type bases: :class:`~pyextdirect.configuration.Base` or list of :class:`~pyextdirect.configuration.Base`
+    :param string url: URL that will be used by the client to reach the router
+    :param string namespace: namespace used by the client
+
+    """
     return 'Ext.app.REMOTING_API = %s;' % json.dumps(create_api_dict(bases, url, namespace))
 
 

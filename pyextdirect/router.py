@@ -38,12 +38,12 @@ class Router(object):
         """Route an Ext Direct request to the appropriate function(s) and provide the response(s)
 
         :param data: Ext Direct request
-        :type data: json or dict
+        :type data: json or dict or list
         :return: appropriate response(s)
         :rtype: json
 
         """
-        if isinstance(data, dict):
+        if isinstance(data, (dict, list)):
             requests = data
         else:
             requests = json.loads(data)
@@ -60,7 +60,7 @@ class Router(object):
         """Call the appropriate function
 
         :param dict request: request that describes the function to call
-        :return: response linked to the request that holds the returned value of the called function
+        :return: response linked to the request that holds the value returned by the called function
         :rtype: dict
 
         """
@@ -105,10 +105,10 @@ class Router(object):
 
 
 def create_instances(configuration):
-    """Create instances from a configuration
+    """Create necessary class instances from a configuration with no argument to the constructor
 
-    :param dict configuration: configuration dict. Such a dict is available in :attr:`~pyextdirect.router.Base.configuration`
-    :return: class, instance mapping
+    :param dict configuration: configuration dict like in :attr:`~pyextdirect.configuration.Base.configuration`
+    :return: a class-instance mapping
     :rtype: dict
 
     """

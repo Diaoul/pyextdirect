@@ -62,7 +62,7 @@ def create_configuration(name='Base'):
 
             :param element: the element to register
             :type element: tuple of (class, method name) or function
-            :param string action: name of the exposed method that will hold the method
+            :param string action: name of the exposed action that will hold the method
             :param string method: name of the exposed method
 
     """
@@ -77,10 +77,10 @@ def create_configuration(name='Base'):
 
 
 def expose(f=None, base=None, action=None, method=None, kind=BASIC):
-    """Expose a function
+    """Decorator to expose a function
 
     .. note::
-        A module function can be decorated but base has to be specified
+        A module function can be decorated but ``base`` parameter has to be specified
 
     :param f: function to expose
     :type f: function or None
