@@ -21,28 +21,32 @@ import inspect
 import json
 
 
-def create_api(bases, url, namespace):
+def create_api(bases, url, **kwargs):
     """Create the JS code for the API using one or more :class:`Bases <pyextdirect.configuration.Base>`
 
     :param bases: configuration bases
     :type bases: :class:`~pyextdirect.configuration.Base` or list of :class:`~pyextdirect.configuration.Base`
-    :param string url: URL that will be used by the client to reach the router
-    :param string namespace: namespace used by the client
+    :param string url: see :func:`create_api_dict`
+    :param \*\*kwargs: see :func:`create_api_dict`
 
     """
-    return 'Ext.app.REMOTING_API = %s;' % json.dumps(create_api_dict(bases, url, namespace))
+    return 'Ext.app.REMOTING_API = %s;' % json.dumps(create_api_dict(bases, url, **kwargs))
 
 
-def create_api_dict(bases, url, namespace):
+def create_api_dict(bases, url, **kwargs):
     """Create an API dict
 
     :param bases: configuration bases
     :type bases: :class:`~pyextdirect.configuration.Base` or list of :class:`~pyextdirect.configuration.Base`
     :param string url: URL where the router can be reached
-    :param string namespace: client namespace for this API
+    :param \*\*kwargs: extra keyword arguments to populate the API dict. Most common keyword arguments are *id*, *maxRetries*, *namespace*, *priority* and *timeout*
+
+    .. note::
+        Keyword arguments *type*, *url*, *actions* and *enableUrlEncode* will be overridden
 
     """
-    api = {'type': 'remoting', 'url': url, 'namespace': namespace, 'actions': defaultdict(list)}
+    api = kwargs or {}
+    api.update({'type': 'remoting', 'url': url, 'actions': defaultdict(list), 'enableUrlEncode': 'data'})
     if not isinstance(bases, list):
         bases = [bases]
     configuration = merge_configurations([b.configuration for b in bases])
