@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with pyextdirect.  If not, see <http://www.gnu.org/licenses/>.
 from pyextdirect.router import Router
-import config
+from . import config
 import json
 import unittest
 
