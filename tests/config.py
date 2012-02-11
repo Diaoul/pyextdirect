@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with pyextdirect.  If not, see <http://www.gnu.org/licenses/>.
-from pyextdirect.configuration import create_configuration, expose, SUBMIT, LOAD
+from pyextdirect.configuration import create_configuration, expose, SUBMIT, LOAD, STORE_READ
 from pyextdirect.exceptions import FormError
 
 
@@ -64,6 +64,10 @@ class Person(Base):
     def load(self):
         """DirectLoad method"""
         return {'name': self.default_name}
+
+    @expose(kind=STORE_READ)
+    def getAll(self, start=None, limit=None, sort=None, dir='DESC'):
+        return [{'id': 1, 'name': 'Diaoul'}, {'id': 2, 'name': 'John'}, {'id': 3, 'name': u'Beyoncé'}]
 
 
 @expose(base=Base, action='Basic')

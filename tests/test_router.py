@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with pyextdirect.  If not, see <http://www.gnu.org/licenses/>.
 from pyextdirect.router import Router
-from . import config
+import config
 import json
 import unittest
 
@@ -70,6 +70,10 @@ class RouterTestCase(unittest.TestCase):
                                                           {'tid': 2, 'action': 'Person', 'method': 'rename_kiss', 'data': None}])))
         self.assertTrue(results[0]['tid'] == 1 and results[0]['result'] == 'hi')
         self.assertTrue(results[1]['tid'] == 2 and results[1]['result'] == 'Kiss')
+
+    def test_call_store_read(self):
+        result = self.router.call({'tid': 1, 'action': 'Person', 'method': 'getAll', 'data': None})
+        self.assertTrue(result['result'] == {'records': [{'id': 1, 'name': 'Diaoul'}, {'id': 2, 'name': 'John'}, {'id': 3, 'name': u'Beyonc\xe9'}], 'total': 3})
 
 
 if __name__ == '__main__':

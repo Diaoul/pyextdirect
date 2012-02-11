@@ -16,7 +16,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with pyextdirect.  If not, see <http://www.gnu.org/licenses/>.
-from . import config
+import config
 import unittest
 from pyextdirect.api import create_api_dict
 
@@ -29,8 +29,9 @@ class APITestCase(unittest.TestCase):
                     'type': 'remoting',
                     'enableUrlEncode': 'data',
                     'actions': {'Person': [{'name': 'load', 'len': 0},
-                                           {'name': 'attack', 'len': 1},
                                            {'formHandler': True, 'name': 'save', 'len': 1},
+                                           {'name': 'attack', 'len': 1},
+                                           {'name': 'getAll', 'len': 4},
                                            {'name': 'rename_kiss', 'len': 0}],
                                 'RenamedService': [{'name': 'hug', 'len': 0},
                                                    {'name': 'renamed_laugh', 'len': 0}],
