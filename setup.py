@@ -17,11 +17,11 @@
 # You should have received a copy of the Lesser GNU Lesser General Public License
 # along with pyextdirect.  If not, see <http://www.gnu.org/licenses/>.
 from setuptools import setup
-execfile('pyextdirect/infos.py')
+import pyextdirect.infos
 
 
 setup(name='pyextdirect',
-    version=__version__,
+    version=pyextdirect.infos.__version__,
     license='LGPLv3',
     description='Python implementation of Ext Direct',
     long_description=open('README.rst').read() + '\n\n' +
