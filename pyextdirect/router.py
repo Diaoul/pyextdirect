@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with pyextdirect.  If not, see <http://www.gnu.org/licenses/>.
-from configuration import merge_configurations, BASIC, LOAD, SUBMIT
+from configuration import merge_configurations, BASIC, LOAD, SUBMIT, STORE_READ
 from exceptions import FormError
 import json
 
@@ -98,6 +98,10 @@ class Router(object):
                     result['success'] = False
                     if e.errors:
                         result['errors'] = e.errors
+            elif func.exposed_kind == STORE_READ:  # DirectStore read method
+                kwargs = request['data'] or {}
+                records = func(**kwargs)
+                result = {'total': len(records), 'records': records}
         except Exception as e:
             if self.debug:
                 return {'type': 'exception', 'message': str(e), 'where': '%s.%s' % (action, method)}
