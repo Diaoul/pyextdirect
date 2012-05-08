@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with pyextdirect.  If not, see <http://www.gnu.org/licenses/>.
 from collections import defaultdict
-from configuration import merge_configurations, SUBMIT
+from configuration import merge_configurations, SUBMIT, STORE_CUD
 import inspect
 import json
 
@@ -55,6 +55,8 @@ def create_api_dict(bases, url, **kwargs):
             if isinstance(element, tuple):
                 func = getattr(element[0], element[1])
                 attrs = len(inspect.getargspec(func)[0]) - 1
+                if func.exposed_kind == STORE_CUD:
+                    attrs += 1
             else:
                 func = element
                 attrs = len(inspect.getargspec(func)[0])
