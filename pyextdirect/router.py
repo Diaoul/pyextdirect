@@ -81,7 +81,10 @@ class Router(object):
                 func = element
             if func.exposed_kind == BASIC:  # basic method
                 args = request['data'] or []
-                result = func(*args)
+                if isinstance(args, dict):
+                    result = func(**args)
+                else:
+                    result = func(*args)
             elif func.exposed_kind == LOAD:  # DirectLoad method
                 args = request['data'] or []
                 result = {'success': True, 'data': func(*args)}

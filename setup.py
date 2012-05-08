@@ -16,16 +16,19 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with pyextdirect.  If not, see <http://www.gnu.org/licenses/>.
-from setuptools import setup
-execfile('pyextdirect/infos.py')
+import os.path
+from setuptools import setup, find_packages
 
 
+def read(fname):
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+
+execfile(os.path.join(os.path.dirname(__file__), 'pyextdirect', 'infos.py'))
 setup(name='pyextdirect',
     version=__version__,
     license='LGPLv3',
     description='Python implementation of Ext Direct',
-    long_description=open('README.rst').read() + '\n\n' +
-                     open('NEWS.rst').read(),
+    long_description=read('README.rst') + '\n\n' + read('NEWS.rst'),
     classifiers=['Development Status :: 4 - Beta',
         'License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)',
         'Intended Audience :: Developers',
@@ -37,4 +40,4 @@ setup(name='pyextdirect',
     author='Antoine Bertin',
     author_email='diaoulael@gmail.com',
     url='https://github.com/Diaoul/pyextdirect',
-    packages=['pyextdirect'])
+    packages=find_packages())
