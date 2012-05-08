@@ -65,3 +65,4 @@ def create_api_dict(bases, url, **kwargs):
                 spec['formHandler'] = True
             api['actions'][action].append(spec)
     return api
+
