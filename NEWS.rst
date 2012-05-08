@@ -1,3 +1,8 @@
+0.2.5
+=====
+
+* Fix result for STORE_CUD requests
+
 0.2.4
 =====
 
