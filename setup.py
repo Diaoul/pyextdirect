@@ -40,4 +40,5 @@ setup(name='pyextdirect',
     author='Antoine Bertin',
     author_email='diaoulael@gmail.com',
     url='https://github.com/Diaoul/pyextdirect',
-    packages=find_packages())
+    packages=find_packages(),
+    test_suite='tests')
