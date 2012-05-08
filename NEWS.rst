@@ -1,7 +1,7 @@
 0.2.1
 =====
 
-* Allow BASIC exposed function to be called with keyword arguments (DirectStore destroy does that)
+* Add DirectStore destroy support
 
 
 0.2

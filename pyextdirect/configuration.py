@@ -17,7 +17,7 @@
 # along with pyextdirect.  If not, see <http://www.gnu.org/licenses/>.
 
 
-__all__ = ['BASIC', 'LOAD', 'SUBMIT', 'STORE_READ', 'ConfigurationMeta', 'create_configuration', 'expose']
+__all__ = ['BASIC', 'LOAD', 'SUBMIT', 'STORE_READ', 'STORE_DESTROY', 'ConfigurationMeta', 'create_configuration', 'expose']
 
 #: Basic method
 BASIC = 0
@@ -30,6 +30,9 @@ SUBMIT = 2
 
 #: DirectStore read method
 STORE_READ = 3
+
+#: DirectStore destroy method
+STORE_DESTROY = 4
 
 
 class ConfigurationMeta(type):
