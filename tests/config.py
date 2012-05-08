@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with pyextdirect.  If not, see <http://www.gnu.org/licenses/>.
-from pyextdirect.configuration import create_configuration, expose, SUBMIT, LOAD, STORE_READ, STORE_DESTROY
+from pyextdirect.configuration import create_configuration, expose, SUBMIT, LOAD, STORE_READ, STORE_CUD
 from pyextdirect.exceptions import Error, FormError
 
 
@@ -69,15 +69,16 @@ class Person(Base):
     def getAll(self, start=None, limit=None, sort=None, dir='DESC'):
         return [{'id': 1, 'name': 'Diaoul'}, {'id': 2, 'name': 'John'}, {'id': 3, 'name': u'Beyoncé'}]
 
-    @expose(kind=STORE_DESTROY)
-    def destroy(self, records):
-        """DirectStore destroy method"""
+    @expose(kind=STORE_CUD)
+    def cud(self, records):
+        """DirectStore create-update-destroy methods"""
         for record in records:
-            if record == 2:
-                raise Error('Record %d does not exist' % record)
+            if record == 2 or isinstance(record, dict) and record['name'] == 'Diaoul':
+                raise Error('CUD Error')
 
 
 @expose(base=Base, action='Basic')
 def say(something):
     """Module level function"""
     return something
+

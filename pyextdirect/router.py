@@ -15,7 +15,7 @@
 #
 # You should have received a copy of the GNU Lesser General Public License
 # along with pyextdirect.  If not, see <http://www.gnu.org/licenses/>.
-from configuration import merge_configurations, BASIC, LOAD, SUBMIT, STORE_READ, STORE_DESTROY
+from configuration import merge_configurations, BASIC, LOAD, SUBMIT, STORE_READ, STORE_CUD
 from exceptions import Error, FormError
 import json
 
@@ -102,7 +102,7 @@ class Router(object):
                 kwargs = request['data'] or {}
                 records = func(**kwargs)
                 result = {'total': len(records), 'records': records}
-            elif func.exposed_kind == STORE_DESTROY:  # DirectStore destroy method
+            elif func.exposed_kind == STORE_CUD:  # DirectStore create-update-destroy methods
                 args = request['data'][0] or {}
                 try:
                     func(**args)
@@ -132,3 +132,4 @@ def create_instances(configuration):
             if cls not in instances:
                 instances[cls] = cls()
     return instances
+

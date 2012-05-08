@@ -75,14 +75,17 @@ class RouterTestCase(unittest.TestCase):
         result = self.router.call({'tid': 1, 'action': 'Person', 'method': 'getAll', 'data': None})
         self.assertTrue(result['result'] == {'records': [{'id': 1, 'name': 'Diaoul'}, {'id': 2, 'name': 'John'}, {'id': 3, 'name': u'Beyonc\xe9'}], 'total': 3})
 
-    def test_route_store_destroy(self):
-        result = self.router.call({'tid': 1, 'action': 'Person', 'method': 'destroy', 'data': [{'records': [1]}]})
+    def test_route_store_cud(self):
+        result = self.router.call({'tid': 1, 'action': 'Person', 'method': 'cud', 'data': [{'records': [1]}]})
         self.assertTrue(result['result']['success'] == True)
-
-    def test_route_store_destroy_failure(self):
-        result = self.router.call({'tid': 1, 'action': 'Person', 'method': 'destroy', 'data': [{'records': [1, 2]}]})
+        result = self.router.call({'tid': 1, 'action': 'Person', 'method': 'cud', 'data': [{'records': [1, 2]}]})
+        self.assertTrue(result['result']['success'] == False)
+        result = self.router.call({'tid': 1, 'action': 'Person', 'method': 'cud', 'data': [{'records': [{'name': 'John'}]}]})
+        self.assertTrue(result['result']['success'] == True)
+        result = self.router.call({'tid': 1, 'action': 'Person', 'method': 'cud', 'data': [{'records': [{'name': 'Diaoul'}]}]})
         self.assertTrue(result['result']['success'] == False)
 
 
 if __name__ == '__main__':
     unittest.main()
+

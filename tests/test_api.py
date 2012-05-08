@@ -32,7 +32,7 @@ class APITestCase(unittest.TestCase):
                                            {'name': 'rename_kiss', 'len': 0},
                                            {'name': 'getAll', 'len': 4},
                                            {'name': 'attack', 'len': 1},
-                                           {'name': 'destroy', 'len': 1},
+                                           {'name': 'cud', 'len': 1},
                                            {'formHandler': True, 'name': 'save', 'len': 1}],
                                 'RenamedService': [{'name': 'hug', 'len': 0},
                                                    {'name': 'renamed_laugh', 'len': 0}],
@@ -42,3 +42,4 @@ class APITestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
