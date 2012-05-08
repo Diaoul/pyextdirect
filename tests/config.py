@@ -72,8 +72,9 @@ class Person(Base):
     @expose(kind=STORE_DESTROY)
     def destroy(self, records):
         """DirectStore destroy method"""
-        if records == 2:
-            raise Error('Record %d does not exist' % records)
+        for record in records:
+            if record == 2:
+                raise Error('Record %d does not exist' % record)
 
 
 @expose(base=Base, action='Basic')

@@ -103,7 +103,7 @@ class Router(object):
                 records = func(**kwargs)
                 result = {'total': len(records), 'records': records}
             elif func.exposed_kind == STORE_DESTROY:  # DirectStore destroy method
-                args = request['data'] or {}
+                args = request['data'][0] or {}
                 try:
                     func(**args)
                     result = {'success': True}
