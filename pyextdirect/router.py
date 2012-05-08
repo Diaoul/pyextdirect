@@ -105,8 +105,7 @@ class Router(object):
             elif func.exposed_kind == STORE_CUD:  # DirectStore create-update-destroy methods
                 args = request['data'][0] or {}
                 try:
-                    func(**args)
-                    result = {'success': True}
+                    result = {'success': True, 'data': func(**args)}
                 except Error:
                     result = {'success': False}
         except Exception as e:

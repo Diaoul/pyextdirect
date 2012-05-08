@@ -75,6 +75,7 @@ class Person(Base):
         for record in records:
             if record == 2 or isinstance(record, dict) and record['name'] == 'Diaoul':
                 raise Error('CUD Error')
+        return [{'id': 1, 'name': 'Diaoul'}, {'id': 2, 'name': 'John'}]
 
 
 @expose(base=Base, action='Basic')

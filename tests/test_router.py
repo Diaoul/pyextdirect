@@ -82,6 +82,7 @@ class RouterTestCase(unittest.TestCase):
         self.assertTrue(result['result']['success'] == False)
         result = self.router.call({'tid': 1, 'action': 'Person', 'method': 'cud', 'data': [{'records': [{'name': 'John'}]}]})
         self.assertTrue(result['result']['success'] == True)
+        self.assertTrue(result['result']['data'] == [{'id': 1, 'name': 'Diaoul'}, {'id': 2, 'name': 'John'}])
         result = self.router.call({'tid': 1, 'action': 'Person', 'method': 'cud', 'data': [{'records': [{'name': 'Diaoul'}]}]})
         self.assertTrue(result['result']['success'] == False)
 
