@@ -1,3 +1,9 @@
+0.3
+===
+
+* Rename records to data
+* pep8 compliance
+
 0.2.5
 =====
 
