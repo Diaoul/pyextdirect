@@ -100,12 +100,12 @@ class Router(object):
                         result['errors'] = e.errors
             elif func.exposed_kind == STORE_READ:  # DirectStore read method
                 kwargs = request['data'] or {}
-                records = func(**kwargs)
-                result = {'total': len(records), 'records': records}
+                data = func(**kwargs)
+                result = {'total': len(data), 'data': data}
             elif func.exposed_kind == STORE_CUD:  # DirectStore create-update-destroy methods
-                args = request['data'][0] or {}
+                kwargs = request['data'][0] or {}
                 try:
-                    result = {'success': True, 'records': func(**args)}
+                    result = {'success': True, 'data': func(**kwargs)}
                 except Error:
                     result = {'success': False}
         except Exception as e:
