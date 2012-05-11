@@ -55,4 +55,3 @@ class FormError(Error):
         result = self.extra
         result['errors'] = self.errors
         return repr(result)
-

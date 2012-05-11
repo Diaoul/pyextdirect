@@ -132,4 +132,3 @@ def merge_configurations(configurations):
                 raise ValueError('%s already in a previous base configuration' % k)
             configuration[k] = v
     return configuration
-
