@@ -70,9 +70,9 @@ class Person(Base):
         return [{'id': 1, 'name': 'Diaoul'}, {'id': 2, 'name': 'John'}, {'id': 3, 'name': u'Beyoncé'}]
 
     @expose(kind=STORE_CUD)
-    def cud(self, records):
+    def cud(self, data):
         """DirectStore create-update-destroy methods"""
-        for record in records:
+        for record in data:
             if record == 2 or isinstance(record, dict) and record['name'] == 'Diaoul':
                 raise Error('CUD Error')
         return [{'id': 1, 'name': 'Diaoul'}, {'id': 2, 'name': 'John'}]
