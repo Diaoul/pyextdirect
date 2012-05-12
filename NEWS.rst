@@ -1,3 +1,10 @@
+0.3.1
+=====
+
+* Fix length of CUD functions in api
+* pep8 compliance for unittests
+* Rename records to data in unittests
+
 0.3
 ===
 
