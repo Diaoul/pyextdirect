@@ -82,4 +82,3 @@ class Person(Base):
 def say(something):
     """Module level function"""
     return something
-
